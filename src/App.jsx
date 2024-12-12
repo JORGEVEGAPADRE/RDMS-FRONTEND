@@ -26,6 +26,11 @@ function App() {
             path="/add-truck"
             element={<TruckComponent />}
           ></Route>
+          {/* //http://localhost:3000/edit-truck/1 */}
+          <Route
+            path="/edit-truck/:id"
+            element={<TruckComponent />}
+          ></Route>
         </Routes>
 
         <FooterComponent />
