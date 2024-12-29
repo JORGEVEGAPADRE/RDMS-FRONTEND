@@ -1,41 +1,67 @@
-import "./App.css";
-import FooterComponent from "./components/FooterComponent";
-import HeaderComponent from "./components/HeaderComponent";
-import ListTruckComponent from "./components/ListTruckComponent";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TruckComponent from "./components/TruckComponent";
+import Sidebar from "./components/Sidebar";
+import Feed from "./components/Feed";
+import Rightbar from "./components/Rightbar";
+import { Box, createTheme, Stack, ThemeProvider } from "@mui/material";
+import Navbar from "./components/Navbar";
+import { SnackbarProvider } from "notistack";
+import { CssBaseline, Hidden } from "@mui/material";
+import { useState } from "react";
+import useStore from "./hooks/useStore";
+import { useEffect } from "react";
+import { ClassNames } from "@emotion/react";
 
 function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <HeaderComponent />
-        <Routes>
-          {/* //http://localhost:3000 */}
-          <Route
-            path="/"
-            element={<ListTruckComponent />}
-          ></Route>
-          {/* //http://localhost:3000/trucks */}
-          <Route
-            path="/trucks"
-            element={<ListTruckComponent />}
-          ></Route>
-          {/* //http://localhost:3000/add-truck */}
-          <Route
-            path="/add-truck"
-            element={<TruckComponent />}
-          ></Route>
-          {/* //http://localhost:3000/edit-truck/1 */}
-          <Route
-            path="/edit-truck/:id"
-            element={<TruckComponent />}
-          ></Route>
-        </Routes>
+  const [mode, setMode] = useState("light");
 
-        <FooterComponent />
-      </BrowserRouter>
-    </>
+  const { currentOp } = useStore();
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
+
+  //const { initializePost } = useStore();
+
+  // useEffect(() => {
+  //   initializePost();
+  // }, []);
+
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={2000}
+      >
+        <Box
+          bgcolor={"background.default"}
+          color={"text.primary"}
+          sx={{
+            display: { md: "block" },
+          }}
+        >
+          <Navbar
+            setMode={setMode}
+            mode={mode}
+          />
+
+          <Stack
+            direction="row"
+            spacing={1}
+            justifyContent="space-between"
+            color={"text.primary"}
+          >
+            <Hidden only={["xs", "sm"]}>
+              <Sidebar
+                setMode={setMode}
+                mode={mode}
+              />
+            </Hidden>
+          </Stack>
+        </Box>
+      </SnackbarProvider>
+    </ThemeProvider>
   );
 }
 

@@ -1,19 +1,21 @@
 // ListTruckComponent.jsx
+import { listDestinations } from "../services/DestinationService";
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import { IconButton, Tooltip, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import CRUDTrucks from "./CRUDTrucks";
+//import CRUDT from "./CRUDTrucks";
 import useStore from "../hooks/useStore";
+import CRUDDestinations from "./CRUDDestinations";
 
-const ListTruckComponent = () => {
+const ListDestinationComponent = () => {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [operation, setOperation] = useState("");
-  const { trucks, setTrucks } = useStore();
+  const { destinations, setDestinations } = useStore();
 
   const handleOpenModal = (op, row = null) => {
     setOperation(op);
@@ -36,32 +38,32 @@ const ListTruckComponent = () => {
       },
     },
     {
-      name: "truckPatent",
-      label: "Truck Patent",
+      name: "addressDescription",
+      label: "Address Description",
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: "truckCapacity",
-      label: "Truck Capacity",
+      name: "addressAlias",
+      label: "Address Alias",
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: "truckService",
-      label: "Truck Service",
+      name: "addressLatitude",
+      label: "Latitude",
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: "truckType",
-      label: "Truck Type",
+      name: "addressLongitude",
+      label: "Longitude",
       options: {
         filter: true,
         sort: true,
@@ -76,7 +78,7 @@ const ListTruckComponent = () => {
           return (
             <div>
               <Tooltip
-                title="Edit Contact"
+                title="Edit Destination"
                 placement="top-start"
               >
                 <IconButton
@@ -86,10 +88,10 @@ const ListTruckComponent = () => {
                   onClick={() =>
                     handleOpenModal("Edit", {
                       id: rowId,
-                      truckPatent: tableMeta.rowData[1],
-                      truckCapacity: tableMeta.rowData[2],
-                      truckService: tableMeta.rowData[3],
-                      truckType: tableMeta.rowData[4],
+                      addressDescription: tableMeta.rowData[1],
+                      addressAlias: tableMeta.rowData[2],
+                      addressLatitude: tableMeta.rowData[3],
+                      addressLongitude: tableMeta.rowData[4],
                     })
                   }
                 >
@@ -98,7 +100,7 @@ const ListTruckComponent = () => {
               </Tooltip>
               &nbsp;&nbsp;
               <Tooltip
-                title="Delete Contact"
+                title="Delete Destination"
                 placement="top-start"
               >
                 <IconButton
@@ -108,10 +110,10 @@ const ListTruckComponent = () => {
                   onClick={() =>
                     handleOpenModal("Delete", {
                       id: rowId,
-                      truckPatent: tableMeta.rowData[1],
-                      truckCapacity: tableMeta.rowData[2],
-                      truckService: tableMeta.rowData[3],
-                      truckType: tableMeta.rowData[4],
+                      addressDescription: tableMeta.rowData[1],
+                      addressAlias: tableMeta.rowData[2],
+                      addressLatitude: tableMeta.rowData[3],
+                      addressLongitude: tableMeta.rowData[4],
                     })
                   }
                 >
@@ -133,6 +135,8 @@ const ListTruckComponent = () => {
     rowsPerPageOptions: [10, 20, 50],
   };
 
+  console.log(destinations);
+
   return (
     <div>
       <Button
@@ -141,15 +145,15 @@ const ListTruckComponent = () => {
         startIcon={<AddIcon />}
         onClick={() => handleOpenModal("Add")}
       >
-        Create Truck
+        Create Destination
       </Button>
       <MUIDataTable
-        title={"Create, Edit, Delete Truck"}
-        data={trucks}
+        title={"Create, Edit, Delete Destination"}
+        data={destinations}
         columns={columns}
         options={options}
       />
-      <CRUDTrucks
+      <CRUDDestinations
         open={modalOpen}
         handleClose={handleCloseModal}
         operation={operation}
@@ -159,4 +163,4 @@ const ListTruckComponent = () => {
   );
 };
 
-export default ListTruckComponent;
+export default ListDestinationComponent;
