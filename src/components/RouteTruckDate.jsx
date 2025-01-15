@@ -173,11 +173,11 @@ function RouteTruckDate() {
       case "Realizado":
         return "/realizado.gif";
       case "No Realizado":
-        return "/parcial.png";
+        return "/liberty.png";
       case "Parcial":
-        return "/realizado.gif";
-      case "Rechazado":
         return "/parcial.png";
+      case "Rechazado":
+        return "/furgon.png";
       default:
         return customIcon;
     }
