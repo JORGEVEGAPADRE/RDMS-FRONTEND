@@ -16,6 +16,7 @@ import { Brightness4 } from "@mui/icons-material";
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between",
+  textAlign: "center",
 });
 
 const UserBox = styled(Box)(({ theme }) => ({
@@ -31,6 +32,7 @@ const Navbar = ({ mode, setMode }) => {
     <AppBar position="sticky">
       <StyledToolbar>
         <Typography
+          marginLeft={65}
           variant="h6"
           sx={{ display: { xs: "none", sm: "block" } }}
         >
@@ -51,8 +53,6 @@ const Navbar = ({ mode, setMode }) => {
         </Box>
 
         <UserBox>
-          <Typography variant="span">VegaSoft Corporation</Typography>
-
           <MenuIcon
             onClick={(e) => setOpen(true)}
             sx={{ display: { xs: "block", sm: "none" } }}

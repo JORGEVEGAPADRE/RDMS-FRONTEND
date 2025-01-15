@@ -181,16 +181,7 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <Brightness4 />
-              </ListItemIcon>
-              <Switch
-                onChange={(e) => setMode(mode === "light" ? "dark" : "light")}
-              />
-            </ListItemButton>
-          </ListItem>
+          
         </List>
       </Box>
       <Box
