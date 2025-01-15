@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import ReusableDataTable from "./ReusableDataTable";
 import CRUDModal from "./CRUDModal";
 import StoreContext from "../context/StoreProvider";
@@ -10,41 +11,56 @@ import StoreContext from "../context/StoreProvider";
 //  deleteTruck,
 //} from "../services/TruckService";
 
-const ListTruckComponent = ({
+const RoutesTrucks = ({
   open,
   handleClose,
   operation,
   currentData,
   handleOpenModal,
 }) => {
-  const { trucks, getAllTrucks, createTruck, updateTruck, deleteTruck } =
-    useContext(StoreContext);
+  const {
+    deliveries,
+    getAllDeliveries,
+    createDelivery,
+    updateDelivery,
+    deleteDelivery,
+  } = useContext(StoreContext);
 
   useEffect(() => {
-    getAllTrucks();
+    getAllDeliveries();
   }, []);
 
   const columns = [
     { name: "id", label: "ID", options: { filter: true, sort: true } },
+
+    {
+      name: "truckId",
+      label: "Truck Id",
+      options: { filter: true, sort: true },
+    },
     {
       name: "truckPatent",
       label: "Truck Patent",
       options: { filter: true, sort: true },
     },
     {
-      name: "truckCapacity",
-      label: "Truck Capacity",
+      name: "destinationId",
+      label: "Destination Id",
       options: { filter: true, sort: true },
     },
     {
-      name: "truckService",
-      label: "Truck Service",
+      name: "addressAlias",
+      label: "Destination (Alias)",
       options: { filter: true, sort: true },
     },
     {
-      name: "truckType",
-      label: "Truck Type",
-      options: { filter: true, sort: true },
+      name: "deliveryDate",
+      label: "Delivery Date",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => moment(value).format("DD-MM-YYYY"),
+      },
     },
     {
       name: "acciones",
@@ -54,42 +70,40 @@ const ListTruckComponent = ({
   ];
 
   const fields = [
-    { name: "truckPatent", label: "Truck Patent", required: true },
-    { name: "truckCapacity", label: "Truck Capacity", required: true },
-    { name: "truckService", label: "Truck Service", required: true },
-    { name: "truckType", label: "Truck Type", required: true },
+    { name: "truckId", label: "Truck Id", required: true },
+    { name: "destinationId", label: "Destination Id", required: true },
+    { name: "deliveryDate", label: "Delivery Date", required: true },
   ];
 
   return (
     <>
       <ReusableDataTable
-        title="Truck"
-        data={trucks}
+        title="Route"
+        data={deliveries}
         columns={columns}
         fields={fields}
         handleOpenModal={handleOpenModal}
-        createEntity={createTruck}
-        updateEntity={updateTruck}
-        deleteEntity={deleteTruck}
-        getAllEntities={getAllTrucks}
+        createEntity={createDelivery}
+        updateEntity={updateDelivery}
+        deleteEntity={deleteDelivery}
+        getAllEntities={getAllDeliveries}
       />
       <CRUDModal
-        entityType="truck"
+        entityType="delivery"
         open={open}
         handleClose={handleClose}
         operation={operation}
         currentData={currentData}
         fields={fields}
-        createEntity={createTruck}
-        updateEntity={updateTruck}
-        deleteEntity={deleteTruck}
-        getAllEntities={getAllTrucks}
+        createEntity={createDelivery}
+        updateEntity={updateDelivery}
+        deleteEntity={deleteDelivery}
+        getAllEntities={getAllDeliveries}
       />
     </>
   );
 };
-
-ListTruckComponent.propTypes = {
+RoutesTrucks.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   operation: PropTypes.string,
@@ -99,4 +113,4 @@ ListTruckComponent.propTypes = {
   getAllEntities: PropTypes.func.isRequired,
 };
 
-export default ListTruckComponent;
+export default RoutesTrucks;

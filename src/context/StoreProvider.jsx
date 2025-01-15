@@ -1,15 +1,34 @@
-import { createContext, useState, useEffect } from "react";
-//import { deleteTruck, listTrucks } from "../services/TruckService";
-import { listTrucks } from "../services/TruckService";
-import { listDestinations } from "../services/DestinationService";
+import { createContext, useState, useEffect, useCallback } from "react";
+//import { listTrucks } from "../services/TruckService";
+//import { listDestinations } from "../services/DestinationService";
+import {
+  createTruck,
+  updateTruck,
+  deleteTruck,
+  listTrucks,
+} from "../services/TruckService";
+import {
+  createDestination,
+  updateDestination,
+  deleteDestination,
+  listDestinations,
+} from "../services/DestinationService";
+
+import {
+  createDelivery,
+  updateDelivery,
+  deleteDelivery,
+  listDeliveries,
+} from "../services/DeliveryService";
+
 const StoreContext = createContext();
 
-const StoreProvider = ({ children }) => {
-  const [open, setOpen] = useState(false);
+export const StoreProvider = ({ children }) => {
   const [trucks, setTrucks] = useState([]);
+  const [deliveries, setDeliveries] = useState([]);
   const [destinations, setDestinations] = useState([]);
-  // const [selectedRowIds, setSelectedRowIds] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState(null);
+  const [open, setOpen] = useState(true);
 
   const handleSelect = (component) => {
     setSelectedComponent(component);
@@ -20,25 +39,47 @@ const StoreProvider = ({ children }) => {
     getAllDestinations();
   }, []);
 
-  function getAllTrucks() {
+  /*
+  const updateTruckWrapper = async (id, data) => {
+    updateTruck(id, data);
+    getAllTrucks();
+  };
+
+  const deleteTruckWrapper = async (id) => {
+    deleteTruck(id);
+    getAllTrucks();
+  };
+  */
+
+  const getAllTrucks = () => {
     listTrucks()
       .then((response) => {
-        setTrucks(response.data);
+        setTrucks(response.data.sort((a, b) => b.id - a.id)); // Ordenar en orden descendente
       })
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
-  function getAllDestinations() {
+  const getAllDestinations = () => {
     listDestinations()
       .then((response) => {
-        setDestinations(response.data);
+        setDestinations(response.data.sort((a, b) => b.id - a.id)); // Ordenar en orden descendente
       })
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
+
+  const getAllDeliveries = () => {
+    listDeliveries()
+      .then((response) => {
+        setDeliveries(response.data.sort((a, b) => b.id - a.id)); // Ordenar en orden descendente
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <StoreContext.Provider
@@ -46,12 +87,25 @@ const StoreProvider = ({ children }) => {
         trucks,
         destinations,
         setTrucks,
+        setDestinations,
         getAllTrucks,
         getAllDestinations,
-        //setSelectedRowIds,
         handleSelect,
         selectedComponent,
+        createDestination,
+        updateDestination,
+        deleteDestination,
+        createTruck,
+        updateTruck,
+        deleteTruck,
         open,
+        setOpen,
+        deliveries,
+        setDeliveries,
+        getAllDeliveries,
+        createDelivery,
+        updateDelivery,
+        deleteDelivery,
       }}
     >
       {children}
@@ -59,5 +113,4 @@ const StoreProvider = ({ children }) => {
   );
 };
 
-export { StoreProvider };
 export default StoreContext;

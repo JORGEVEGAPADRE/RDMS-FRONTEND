@@ -1,6 +1,6 @@
 import Sidebar from "./components/Sidebar";
-import Feed from "./components/Feed";
-import Rightbar from "./components/Rightbar";
+//import Feed from "./components/Feed";
+//import Rightbar from "./components/originales/Rightbar";
 import { Box, createTheme, Stack, ThemeProvider } from "@mui/material";
 import Navbar from "./components/Navbar";
 import { SnackbarProvider } from "notistack";
