@@ -157,6 +157,7 @@ function RouteTruckDate() {
                 <p>Alias: ${marker.addressAlias}</p>
                 <p>Latitud: ${marker.lat}</p>
                 <p>Longitud: ${marker.lng}</p>
+                <strong>Estatus: ${marker.status}</strong>
               </div>
             `,
           });

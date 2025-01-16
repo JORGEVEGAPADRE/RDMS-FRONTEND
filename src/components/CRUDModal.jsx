@@ -5,7 +5,7 @@ import {
   Typography,
   TextField,
   Button,
-  setRef,
+  IconButton,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import PropTypes from "prop-types";
@@ -15,6 +15,8 @@ import { Autocomplete } from "@react-google-maps/api";
 
 import { Stack } from "@mui/material";
 import { CgChevronDoubleLeft } from "react-icons/cg";
+
+import { Close as CloseIcon } from "@mui/icons-material";
 
 const modalStyle = {
   position: "absolute",
@@ -62,7 +64,7 @@ const CRUDModal = ({
     if (open) {
       if (operation === "Add") {
         setFormData(initialFormData);
-      } else if (operation != "Add" && currentData) {
+      } else if (operation !== "Add" && currentData) {
         setFormData(
           fields.reduce(
             (acc, field) => ({
@@ -212,6 +214,18 @@ const CRUDModal = ({
       onClose={handleClose}
     >
       <Box sx={modalStyle}>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <Typography
           variant="h6"
           component="h2"
@@ -270,7 +284,7 @@ const CRUDModal = ({
                 sx={{ width: "100%", mb: 2 }}
                 id={field.name}
                 name={field.name}
-                value={(field.value = latitude)}
+                value={latitude}
                 label={field.label}
                 type="text"
                 variant="standard"
