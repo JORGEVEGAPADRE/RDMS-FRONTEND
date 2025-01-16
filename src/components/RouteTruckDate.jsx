@@ -84,14 +84,14 @@ function RouteTruckDate() {
       return;
     }
 
-    /*const dateRegex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-\d{4}$/;
+    const dateRegex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-\d{4}$/;
     if (!selectedDate.match(dateRegex)) {
       alert("Por favor, ingrese una fecha válida en el formato dd-MM-yyyy.");
       return;
     }
 
-    //const formattedDate = selectedDate.split("-").reverse().join("-"); */
-    /* const formattedDate = moment(selectedDate, "DD-MM-YYYY").format(
+    const formattedDate = selectedDate.split("-").reverse().join("-");
+    /*const formattedDate = moment(selectedDate, "DD-MM-YYYY").format(
       "yyyy-MM-dd"
     ); */
     clearMarkers();
@@ -101,7 +101,7 @@ function RouteTruckDate() {
       {
         params: {
           truckPatent: selectedTruckPatent,
-          date: selectedDate,
+          date: formattedDate,
         },
       }
     );
@@ -266,11 +266,11 @@ function RouteTruckDate() {
             )}
           />
           <TextField
-            label="Select Date"
+            label="Input Date"
             type="text"
             value={selectedDate}
             onChange={handleDateChange}
-            //placeholder="dd-MM-yyyy"
+            placeholder="dd-MM-yyyy"
             InputLabelProps={{ shrink: true }}
             variant="outlined"
             fullWidth
