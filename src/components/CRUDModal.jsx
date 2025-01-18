@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import {
   Modal,
   Box,
@@ -15,8 +15,10 @@ import { Autocomplete } from "@react-google-maps/api";
 
 import { Stack } from "@mui/material";
 import { CgChevronDoubleLeft } from "react-icons/cg";
+import StoreContext from "../context/StoreProvider";
 
 import { Close as CloseIcon } from "@mui/icons-material";
+import MenuItem from "@mui/material/MenuItem";
 
 const modalStyle = {
   position: "absolute",
@@ -49,6 +51,11 @@ const CRUDModal = ({
     (acc, field) => ({ ...acc, [field.name]: "" }),
     {}
   );
+  const [selectedTruckId, setSelectedTruckId] = useState("");
+  const [selectedDestinationId, setSelectedDestinationId] = useState("");
+  const [selectedTruckPatent, setSelectedTruckPatent] = useState(null);
+  const { trucks, getAllTrucks } = useContext(StoreContext);
+  const { destinations, getAllDestinations } = useContext(StoreContext);
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [originLatLng, setOriginLatLng] = useState({ lat: "", lng: "" });
   const [latitude, setLatitude] = useState(0);
@@ -61,6 +68,8 @@ const CRUDModal = ({
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
+    getAllTrucks();
+    getAllDestinations();
     if (open) {
       if (operation === "Add") {
         setFormData(initialFormData);
@@ -86,10 +95,25 @@ const CRUDModal = ({
     }));
     if (opc === 1) {
       calculateCoordinates();
-      console.log("opc :" + opc);
-      console.log(latitude);
-      console.log(longitude);
     }
+  };
+
+  const handleTruckChange = (e) => {
+    const selectedId = e.target.value;
+    setSelectedTruckId(selectedId);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      truckId: selectedId,
+    }));
+  };
+
+  const handleDestinationChange = (e) => {
+    const selectedDestinationId = e.target.value;
+    setSelectedDestinationId(selectedDestinationId);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      destinationId: selectedDestinationId,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -148,8 +172,6 @@ const CRUDModal = ({
           });
         });
     } else if (operation === "Delete") {
-      console.log(operation);
-      console.log(currentData.id);
       deleteEntity(currentData.id)
         .then(() => {
           enqueueSnackbar("Delete successfully !!!", {
@@ -310,6 +332,56 @@ const CRUDModal = ({
                 disabled={true}
                 onChange={(e) => handleChange(e, 1)}
               />
+            );
+          } else if (field.name === "truckId" && operation !== "Delete") {
+            return (
+              <TextField
+                select
+                key={field.name}
+                required={field.required}
+                sx={{ width: "100%", mb: 2 }}
+                id={field.name}
+                name={field.name}
+                value={selectedTruckId}
+                label={field.label}
+                variant="standard"
+                onChange={handleTruckChange}
+                SelectProps={{ native: false }}
+              >
+                {trucks.map((truck, index) => (
+                  <MenuItem
+                    key={index}
+                    value={truck.id}
+                  >
+                    {truck.truckPatent}
+                  </MenuItem>
+                ))}
+              </TextField>
+            );
+          } else if (field.name === "destinationId" && operation !== "Delete") {
+            return (
+              <TextField
+                select
+                key={field.name}
+                required={field.required}
+                sx={{ width: "100%", mb: 2 }}
+                id={field.name}
+                name={field.name}
+                value={selectedDestinationId}
+                label={field.label}
+                variant="standard"
+                onChange={handleDestinationChange}
+                SelectProps={{ native: false }}
+              >
+                {destinations.map((destination, index) => (
+                  <MenuItem
+                    key={index}
+                    value={destination.id}
+                  >
+                    {destination.addressDescription}
+                  </MenuItem>
+                ))}
+              </TextField>
             );
           } else {
             return (

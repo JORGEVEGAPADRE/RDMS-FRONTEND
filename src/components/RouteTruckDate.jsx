@@ -42,7 +42,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1),
   borderRadius: theme.shape.borderRadius,
   margin: theme.spacing(1),
-  backgroundColor: "gray",
+  backgroundColor: "lightgrey",
   boxShadow: theme.shadows[1],
   minWidth: theme.breakpoints.values.md,
   zIndex: 1,
